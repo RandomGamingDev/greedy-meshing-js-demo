@@ -1,4 +1,5 @@
 // Note: This example is purposely inefficient for the purpose of demonstration and can be significantly sped up via bitwise-based rather than iteration-based column operations
+// DEBUG_VISUALS: Replace all `del_block(k, l)` with the commented line after to get DEBUG_VISUALS that demonstrate which parts of the greedily made mesh were vertically and which were horizontally generated.
 
 let pixy;
 let meshes;
@@ -18,7 +19,7 @@ function generate_meshes(get_block, del_block) {
         break;
       l = mesh_start_y;
       for (; l < j; l++)
-        del_block(k, l); // pixy.setPixel([k, l], color(0, 255, 0)); // (Display green for horizontally expanded)
+        del_block(k, l); // pixy.setPixel([k, l], color(0, 255, 0)); // EXTRA_VISUALS (Display green for horizontally expanded)
     }
     
     return k;
@@ -29,7 +30,7 @@ function generate_meshes(get_block, del_block) {
     let mesh_start_y = j; // Designate where the first of the previous unbroken sequence of active block before the current one is; otherwise equal the current block's j
     for (; j < pixy.res[1]; j++) {
       if (get_block(i, j)) // If there's an active block don't update mesh_start_y so that it designates whichever was the first of the previous unbroken sequence of active blocks
-        del_block(i, j); // pixy.setPixel([i, j], color(0, 0, 255)); (Display blue for vertically expanded)
+        del_block(i, j); // pixy.setPixel([i, j], color(0, 0, 255)); // EXTRA_VISUALS (Display blue for vertically expanded)
       else {
         if (mesh_start_y != j) // Generate a mesh now that a break in a generated mesh is detected (mesh_start_y == j would mean invalid length 0)
           meshes.push(i, mesh_start_y, calculate_mesh_horizontal(i, j, mesh_start_y), j);
